@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">au-2018-jvm2</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_map">Museums Map</string>
+    <string name="my_museums">My Museums</string>
+    <string name="all_museums">All Museums</string>
+    <string name="museums_map">Museums Map</string>
+    <string name="checkout">CheckOut</string>
+</resources>
