@@ -32,7 +32,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
 
     private val REQUEST_PLACE_PICKER = 1
     private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
-    private val FIREBASE_ROOT_NODE = "checkouts"
+    private val FIREBASE_ROOT_NODE = "museums"
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mMap: GoogleMap? = null
@@ -92,11 +92,6 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
             mMap!!.setOnMyLocationChangeListener(null)
         })
 
-        // Pad the map controls to make room for the button - note that the button may not have
-        // been laid out yet.
-        checkout_button.viewTreeObserver.addOnGlobalLayoutListener({
-                    mMap!!.setPadding(0, checkout_button.getHeight(), 0, 0) })
-
         // Set up Firebase
         Firebase.setAndroidContext(this)
         mFirebase = Firebase(FIREBASE_URL)
@@ -104,41 +99,11 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         mFirebase!!.child(FIREBASE_ROOT_NODE).addValueEventListener(this)
     }
 
-    /**
-     * Prompt the user to check out of their location. Called when the "Check Out!" button
-     * is clicked.
-     */
-    fun checkOut(view: View) {
-        try {
-            val intentBuilder = PlacePicker.IntentBuilder()
-            val intent = intentBuilder.build(this)
-            startActivityForResult(intent, REQUEST_PLACE_PICKER)
-        } catch (e: GooglePlayServicesRepairableException) {
-            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode,
-                    REQUEST_PLACE_PICKER)
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            Toast.makeText(this, "Please install Google Play Services!", Toast.LENGTH_LONG).show()
-        }
-
-    }
-
     override fun onDataChange(dataSnapshot: DataSnapshot?) {
-        dataSnapshot!!.children.forEach({child ->
-            val placeId = child.getKey() ?: return
-            Places.GeoDataApi.getPlaceById(mGoogleApiClient!!, placeId)
-                    .setResultCallback({places ->
-                        val location = places.get(0).latLng
-                        addPointToViewPort(location)
-                        mMap!!.addMarker(MarkerOptions().position(location));
-                        places.release()
-                    })
-
-        })
+        dataSnapshot!!.children.forEach({child -> placeOnMap(child, "")})
     }
 
-    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
 
     override fun onChildChanged(dataSnapshot: DataSnapshot?, s: String?) {
         placeOnMap(dataSnapshot, s)
@@ -148,9 +113,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         placeOnMap(dataSnapshot, s)
     }
 
-    override fun onChildRemoved(p0: DataSnapshot?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onChildRemoved(p0: DataSnapshot?) {}
 
     override fun onCancelled(p0: FirebaseError?) {
         Toast.makeText(this, p0?.message, Toast.LENGTH_LONG).show()
@@ -158,17 +121,16 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
 
     private fun addPointToViewPort(newPoint: LatLng) {
         mBounds.include(newPoint)
-        mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(mBounds.build(),
-                checkout_button.getHeight()))
     }
 
     private fun placeOnMap(dataSnapshot: DataSnapshot?, s: String?) {
-        val placeId = dataSnapshot!!.key ?: return
+        val name = dataSnapshot!!.key ?: return
+        val placeId = dataSnapshot.getValue<String>(String::class.java)
         Places.GeoDataApi.getPlaceById(mGoogleApiClient!!, placeId)
                 .setResultCallback({places ->
                     val location = places.get(0).latLng
                     addPointToViewPort(location)
-                    mMap!!.addMarker(MarkerOptions().position(location));
+                    mMap!!.addMarker(MarkerOptions().position(location).title(name));
                     places.release()
                 })
     }
