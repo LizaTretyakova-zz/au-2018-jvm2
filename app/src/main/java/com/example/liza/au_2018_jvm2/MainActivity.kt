@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 //        myMuseumsBtn.setOnClickListener(::launchMyMuseums)
-//        allMuseumsBtn.setOnClickListener(::launchAllMuseums)
+        allMuseumsBtn.setOnClickListener(::launchAllMuseums)
         mapBtn.setOnClickListener(::launchMap)
     }
 
@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity() {
 //        val intent = Intent(this, MyMuseumsActivity::class.java)
 //        startActivity(intent)
 //    }
-//
-//    fun launchAllMuseums(v: View) {
-//        val intent = Intent(this, AllMuseumsActivity::class.java)
-//        startActivity(intent)
-//    }
+
+    fun launchAllMuseums(v: View) {
+        val intent = Intent(this, AllMuseumsLoader::class.java)
+        startActivity(intent)
+    }
 
     fun launchMap(v: View) {
         val intent = Intent(this, MapActivity::class.java)
