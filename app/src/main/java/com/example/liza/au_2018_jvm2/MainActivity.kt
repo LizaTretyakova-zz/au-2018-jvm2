@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     fun launchAllMuseums(v: View) {
-        val intent = Intent(this, AllMuseumsLoader::class.java)
+        val intent = Intent(this, AllMuseumsActivity::class.java)
         startActivity(intent)
     }
 
