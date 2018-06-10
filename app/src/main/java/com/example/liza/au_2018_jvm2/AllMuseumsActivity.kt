@@ -3,8 +3,11 @@ package com.example.liza.au_2018_jvm2
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.firebase.client.Firebase
 import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_all_museums.*
@@ -16,6 +19,7 @@ class AllMuseumsActivity : AppCompatActivity() {
     private var mMuseumsReference: DatabaseReference? = null
     private var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>? = null
     private var mFirebase: Firebase? = null
+    private var mOptions: FirebaseRecyclerOptions<Museum>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,26 +29,57 @@ class AllMuseumsActivity : AppCompatActivity() {
 //        Firebase.setAndroidContext(this)
 //        mFirebase = Firebase(FIREBASE_URL)
         mMuseumsReference = FirebaseDatabase.getInstance().getReference(FIREBASE_ROOT_NODE);
-        setUpFirebaseAdapter()
-    }
+//        setUpFirebaseAdapter()
 
-    private fun setUpFirebaseAdapter() {
-        mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(
-                Museum::class.java, R.layout.all_museums_view_holder,
-                AllMuseumsViewHolder::class.java, mMuseumsReference) {
+        val query = mMuseumsReference!!.child("descriptions")
+        mOptions = FirebaseRecyclerOptions.Builder<Museum>()
+                .setQuery(query, Museum::class.java)
+                .build() // maybe  need customizable parser
+        mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(mOptions!!) {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMuseumsViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.all_museums_view_holder, parent, false)
+                return AllMuseumsViewHolder(view)
+            }
 
-            override fun populateViewHolder(viewHolder: AllMuseumsViewHolder,
-                                                      model: Museum, position: Int) {
-                viewHolder.bindMuseum(model)
+            override fun onBindViewHolder(holder: AllMuseumsViewHolder, position: Int, model: Museum) {
+                holder.bindMuseum(model)
             }
         }
         all_museums!!.setHasFixedSize(true)
-        all_museums!!.setLayoutManager(LinearLayoutManager(this))
-        all_museums!!.setAdapter(mFirebaseAdapter)
+        all_museums!!.layoutManager = LinearLayoutManager(this)
+        all_museums!!.adapter = mFirebaseAdapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mFirebaseAdapter!!.cleanup()
+    override fun onStart() {
+        super.onStart()
+        mFirebaseAdapter!!.startListening()
     }
+
+    override fun onStop() {
+        super.onStop()
+        mFirebaseAdapter!!.stopListening()
+    }
+
+//    private fun setUpFirebaseAdapter() {
+//        mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(
+//                Museum::class.java,
+//                R.layout.all_museums_view_holder,
+//                AllMuseumsViewHolder::class.java,
+//                mMuseumsReference) {
+//
+//            override fun populateViewHolder(viewHolder: AllMuseumsViewHolder,
+//                                                      model: Museum, position: Int) {
+//                viewHolder.bindMuseum(model)
+//            }
+//        }
+//        all_museums!!.setHasFixedSize(true)
+//        all_museums!!.setLayoutManager(LinearLayoutManager(this))
+//        all_museums!!.setAdapter(mFirebaseAdapter)
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        mFirebaseAdapter!!.cleanup()
+//    }
 }

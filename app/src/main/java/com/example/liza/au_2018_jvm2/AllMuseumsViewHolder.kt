@@ -31,6 +31,9 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
 
         mView.museum_name_text_view.text = museum.name
         mView.museum_description_text_view.text = museum.description
+
+        val cs = "Museum page bound"
+        Toast.makeText(this.mContext, cs, Toast.LENGTH_LONG).show()
     }
 
     override fun onClick(view: View) {
