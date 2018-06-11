@@ -50,12 +50,28 @@ class AllMuseumsActivity : AppCompatActivity() {
         all_museums!!.setHasFixedSize(true)
         all_museums!!.layoutManager = LinearLayoutManager(this)
         all_museums!!.adapter = mFirebaseAdapter
+        Toast.makeText(this, "ONCREATE", Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {
         super.onStart()
         Toast.makeText(this, "ONSTART", Toast.LENGTH_LONG).show()
         mFirebaseAdapter!!.startListening()
+
+        // For the sake of testing, put one hard-coded ViewHolder here. Amen.
+        Firebase.setAndroidContext(this)
+        val view = LayoutInflater.from(this)
+                .inflate(R.layout.all_museums_view_holder, all_museums, false)
+        val holder = AllMuseumsViewHolder(view)
+        holder.bindMuseum(Museum())
+        if (view == null) {
+            Toast.makeText(this, "VIEW IS NULL", Toast.LENGTH_LONG).show()
+        } else if (all_museums == null) {
+            Toast.makeText(this, "ALL_MUSEUMS IS NULL", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "WAT?!", Toast.LENGTH_LONG).show()
+        }
+//        all_museums!!.addView(view)
     }
 
     override fun onStop() {
