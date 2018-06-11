@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import com.firebase.client.Firebase
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -53,33 +54,13 @@ class AllMuseumsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Toast.makeText(this, "ONSTART", Toast.LENGTH_LONG).show()
         mFirebaseAdapter!!.startListening()
     }
 
     override fun onStop() {
         super.onStop()
+        Toast.makeText(this, "ONSTOP", Toast.LENGTH_LONG).show()
         mFirebaseAdapter!!.stopListening()
     }
-
-//    private fun setUpFirebaseAdapter() {
-//        mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(
-//                Museum::class.java,
-//                R.layout.all_museums_view_holder,
-//                AllMuseumsViewHolder::class.java,
-//                mMuseumsReference) {
-//
-//            override fun populateViewHolder(viewHolder: AllMuseumsViewHolder,
-//                                                      model: Museum, position: Int) {
-//                viewHolder.bindMuseum(model)
-//            }
-//        }
-//        all_museums!!.setHasFixedSize(true)
-//        all_museums!!.setLayoutManager(LinearLayoutManager(this))
-//        all_museums!!.setAdapter(mFirebaseAdapter)
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        mFirebaseAdapter!!.cleanup()
-//    }
 }
