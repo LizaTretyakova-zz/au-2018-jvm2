@@ -2,12 +2,14 @@ package com.example.liza.au_2018_jvm2
 
 import android.Manifest
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -130,7 +132,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
                 .setResultCallback({places ->
                     val location = places.get(0).latLng
                     addPointToViewPort(location)
-                    mMap!!.addMarker(MarkerOptions().position(location).title(name));
+                    mMap!!.addMarker(MarkerOptions().position(location).title(name))
                     places.release()
                 })
     }

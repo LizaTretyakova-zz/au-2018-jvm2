@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.firebase.client.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
+import com.squareup.picasso.Picasso
 
 class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
 
@@ -21,6 +22,7 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
     init {
         mContext = mView.getContext()
         mView.setOnClickListener(this)
+        Firebase.setAndroidContext(mContext)
         mFirebase = Firebase(FIREBASE_URL)
     }
 
@@ -29,9 +31,11 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
 
         mView.museum_name_text_view.text = museum.name
         mView.museum_description_text_view.text = museum.description
-
-        val cs = "Museum page bound"
-        Toast.makeText(this.mContext, cs, Toast.LENGTH_LONG).show()
+        Picasso.get()
+                .load(museum.url)
+                .resize(300, 300)
+                .centerCrop()
+                .into(mView.museumImageView)
     }
 
     override fun onClick(view: View) {
@@ -51,7 +55,7 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
                     Toast.makeText(mContext, "Cancelling...", Toast.LENGTH_LONG).show()
                     dialogInterface.cancel();
                 })
-        val alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }
