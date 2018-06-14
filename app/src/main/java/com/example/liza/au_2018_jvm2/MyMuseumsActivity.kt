@@ -1,11 +1,14 @@
 package com.example.liza.au_2018_jvm2
 
 import android.app.ListActivity
+import android.content.DialogInterface
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
+import android.widget.TwoLineListItem
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_DESCRIPTION
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_NAME
@@ -27,7 +30,7 @@ class MyMuseumsActivity : ListActivity() {
 
         // For the cursor adapter, specify which columns go into which views
         val fromColumns: Array<String> = arrayOf(COLUMN_NAME, COLUMN_DESCRIPTION)
-        val toViews = intArrayOf(android.R.id.text1, android.R.id.text2) // The TextView in simple_list_item_2
+        val toViews = intArrayOf(android.R.id.text1, android.R.id.text2) // The TextView's in simple_list_item_2
 
         val dbHelper = MuseumDBHelper(this, null, null)
         mAdapter = SimpleCursorAdapter(this,
@@ -36,8 +39,23 @@ class MyMuseumsActivity : ListActivity() {
         listAdapter = mAdapter
     }
 
-
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
-        // Do something when a list item is clicked
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Delete item");
+        alertDialogBuilder
+                .setMessage("Delete museum " + (v as TwoLineListItem).text1.text + " from your list?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", { dialogInterface: DialogInterface, i: Int ->
+                    // add to local storage
+                    val dbHelper = MuseumDBHelper(this, null, null)
+                    dbHelper.deleteMuseum((v as TwoLineListItem).text1.text.toString())
+                    mAdapter.changeCursor(dbHelper.getAllMuseumsCursor())
+                })
+                .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
+                    // add to local storage
+                    dialogInterface.cancel();
+                })
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

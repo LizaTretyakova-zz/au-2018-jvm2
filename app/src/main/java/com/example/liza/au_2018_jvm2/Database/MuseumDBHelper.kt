@@ -47,6 +47,13 @@ class MuseumDBHelper(context: Context, name: String?,
         return cursor
     }
 
+    fun deleteMuseum(name: String): Boolean {
+        val result = false
+        val db = this.writableDatabase
+        db.delete(TABLE_MUSEUMS, COLUMN_NAME + " = ?", arrayOf(name))
+        return result
+    }
+
     companion object {
 
         private val DATABASE_VERSION = 3
