@@ -29,15 +29,14 @@ class MuseumDBHelper(context: Context, name: String?,
     }
 
     fun addMuseum(museum: Museum) {
-
         val values = ContentValues()
         values.put(COLUMN_NAME, museum.name)
         values.put(COLUMN_DESCRIPTION, museum.description)
         values.put(COLUMN_URL, museum.url)
 
         val db = this.writableDatabase
-
         db.insert(TABLE_MUSEUMS, null, values)
+        db.close()
     }
 
     fun getAllMuseumsCursor (): Cursor {
@@ -51,6 +50,7 @@ class MuseumDBHelper(context: Context, name: String?,
         val result = false
         val db = this.writableDatabase
         db.delete(TABLE_MUSEUMS, COLUMN_NAME + " = ?", arrayOf(name))
+        db.close()
         return result
     }
 
