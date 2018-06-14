@@ -9,4 +9,5 @@
     <string name="image">image</string>
     <string name="museum_name">Museum Name</string>
     <string name="museum_description">Museum Description</string>
+    <string name="title_activity_my_museums">MyMuseumsActivity</string>
 </resources>

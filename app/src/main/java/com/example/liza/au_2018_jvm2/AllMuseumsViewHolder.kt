@@ -5,11 +5,10 @@ import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Toast
+import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.firebase.client.Firebase
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
 
 class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
 
@@ -39,8 +38,6 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
     }
 
     override fun onClick(view: View) {
-//        val cs = "Museum page will be here"
-//        Toast.makeText(this.mContext, cs, Toast.LENGTH_LONG).show()
         val alertDialogBuilder = AlertDialog.Builder(mContext)
         alertDialogBuilder.setTitle(mMuseum!!.name);
         alertDialogBuilder
@@ -48,11 +45,11 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
                 .setCancelable(false)
                 .setPositiveButton("Add to my list!", { dialogInterface: DialogInterface, i: Int ->
                     // add to local storage
-                    Toast.makeText(mContext, "Will add later...", Toast.LENGTH_LONG).show()
+                    val dbHelper = MuseumDBHelper(mContext, null, null)
+                    dbHelper.addMuseum(mMuseum!!)
                 })
                 .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
                     // add to local storage
-                    Toast.makeText(mContext, "Cancelling...", Toast.LENGTH_LONG).show()
                     dialogInterface.cancel();
                 })
         val alertDialog = alertDialogBuilder.create()

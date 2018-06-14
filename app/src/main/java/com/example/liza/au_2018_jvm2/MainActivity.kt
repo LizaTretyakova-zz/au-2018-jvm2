@@ -12,15 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        myMuseumsBtn.setOnClickListener(::launchMyMuseums)
+        myMuseumsBtn.setOnClickListener(::launchMyMuseums)
         allMuseumsBtn.setOnClickListener(::launchAllMuseums)
         mapBtn.setOnClickListener(::launchMap)
     }
 
-//    fun launchMyMuseums(v: View) {
-//        val intent = Intent(this, MyMuseumsActivity::class.java)
-//        startActivity(intent)
-//    }
+    fun launchMyMuseums(v: View) {
+        val intent = Intent(this, MyMuseumsActivity::class.java)
+        startActivity(intent)
+    }
 
     fun launchAllMuseums(v: View) {
         val intent = Intent(this, AllMuseumsActivity::class.java)

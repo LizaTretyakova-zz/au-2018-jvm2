@@ -51,7 +51,16 @@
                 android:value="com.example.liza.au_2018_jvm2.MainActivity" />
         </activity>
         <activity android:name=".AllMuseumsLoader" />
-        <activity android:name=".AllMuseumsActivity"></activity>
+        <activity android:name=".AllMuseumsActivity" />
+        <activity
+            android:name=".MyMuseumsActivity"
+            android:label="@string/title_activity_my_museums"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.liza.au_2018_jvm2.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
