@@ -10,16 +10,17 @@ import com.firebase.client.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
 
-class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
+class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
 
-    private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
-    private var mFirebase: Firebase? = null
+    companion object {
+        private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
+        private var mFirebase: Firebase? = null
+    }
 
-    internal var mContext: Context
-    internal var mMuseum: Museum? = null
+    private var mContext: Context = mView.context
+    private var mMuseum: Museum? = null
 
     init {
-        mContext = mView.getContext()
         mView.setOnClickListener(this)
         Firebase.setAndroidContext(mContext)
         mFirebase = Firebase(FIREBASE_URL)
@@ -39,7 +40,7 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
 
     override fun onClick(view: View) {
         val alertDialogBuilder = AlertDialog.Builder(mContext)
-        alertDialogBuilder.setTitle(mMuseum!!.name);
+        alertDialogBuilder.setTitle(mMuseum!!.name)
         alertDialogBuilder
                 .setMessage(mMuseum!!.description)
                 .setCancelable(false)
@@ -50,7 +51,7 @@ class AllMuseumsViewHolder(internal var mView: View) : RecyclerView.ViewHolder(m
                 })
                 .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
                     // add to local storage
-                    dialogInterface.cancel();
+                    dialogInterface.cancel()
                 })
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()

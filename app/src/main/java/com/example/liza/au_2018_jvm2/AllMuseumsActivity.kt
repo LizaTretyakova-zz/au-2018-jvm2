@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.firebase.client.Firebase
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
@@ -13,7 +12,10 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_all_museums.*
 
 class AllMuseumsActivity : AppCompatActivity() {
-    private val FIREBASE_ROOT_NODE = "descriptions2"
+
+    companion object {
+        private val FIREBASE_ROOT_NODE = "descriptions2"
+    }
 
     private var mMuseumsReference: DatabaseReference? = null
     private var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>? = null
@@ -24,7 +26,7 @@ class AllMuseumsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_all_museums)
 
-        mMuseumsReference = FirebaseDatabase.getInstance().getReference(FIREBASE_ROOT_NODE);
+        mMuseumsReference = FirebaseDatabase.getInstance().getReference(FIREBASE_ROOT_NODE)
 
         val query = mMuseumsReference!!
         mOptions = FirebaseRecyclerOptions.Builder<Museum>()

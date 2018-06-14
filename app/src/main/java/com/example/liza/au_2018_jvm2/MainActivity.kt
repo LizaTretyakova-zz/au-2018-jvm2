@@ -17,17 +17,17 @@ class MainActivity : AppCompatActivity() {
         mapBtn.setOnClickListener(::launchMap)
     }
 
-    fun launchMyMuseums(v: View) {
+    private fun launchMyMuseums(v: View) {
         val intent = Intent(this, MyMuseumsActivity::class.java)
         startActivity(intent)
     }
 
-    fun launchAllMuseums(v: View) {
+    private fun launchAllMuseums(v: View) {
         val intent = Intent(this, AllMuseumsActivity::class.java)
         startActivity(intent)
     }
 
-    fun launchMap(v: View) {
+    private fun launchMap(v: View) {
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
     }

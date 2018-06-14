@@ -3,7 +3,6 @@ package com.example.liza.au_2018_jvm2
 import android.app.ListActivity
 import android.content.DialogInterface
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.ListView
@@ -12,13 +11,6 @@ import android.widget.TwoLineListItem
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_DESCRIPTION
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_NAME
-
-// These are the Contacts rows that we will retrieve
-internal val PROJECTION = arrayOf(COLUMN_NAME, COLUMN_DESCRIPTION)
-
-// This is the select criteria
-internal const val SELECTION = "((" + BaseColumns._ID + " NOTNULL) AND (" +
-        BaseColumns._ID + " != '' ))"
 
 class MyMuseumsActivity : ListActivity() {
 
@@ -41,19 +33,19 @@ class MyMuseumsActivity : ListActivity() {
 
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Delete item");
+        alertDialogBuilder.setTitle("Delete item")
         alertDialogBuilder
                 .setMessage("Delete museum " + (v as TwoLineListItem).text1.text + " from your list?")
                 .setCancelable(false)
                 .setPositiveButton("Delete", { dialogInterface: DialogInterface, i: Int ->
                     // add to local storage
                     val dbHelper = MuseumDBHelper(this, null, null)
-                    dbHelper.deleteMuseum((v as TwoLineListItem).text1.text.toString())
+                    dbHelper.deleteMuseum(v.text1.text.toString())
                     mAdapter.changeCursor(dbHelper.getAllMuseumsCursor())
                 })
                 .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
                     // add to local storage
-                    dialogInterface.cancel();
+                    dialogInterface.cancel()
                 })
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()

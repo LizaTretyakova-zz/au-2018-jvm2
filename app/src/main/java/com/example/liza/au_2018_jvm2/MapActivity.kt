@@ -2,25 +2,16 @@ package com.example.liza.au_2018_jvm2
 
 import android.Manifest
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
 import com.firebase.client.*
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlacePicker
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -32,9 +23,11 @@ import kotlinx.android.synthetic.main.activity_map.*
 
 class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, ValueEventListener {
 
-    private val REQUEST_PLACE_PICKER = 1
-    private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
-    private val FIREBASE_ROOT_NODE = "museums"
+    companion object {
+        private val REQUEST_PLACE_PICKER = 1
+        private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
+        private val FIREBASE_ROOT_NODE = "museums"
+    }
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mMap: GoogleMap? = null
@@ -62,9 +55,9 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
                 val place = PlacePicker.getPlace(data, this)
 
                 val checkoutData = mutableMapOf<String, Any>()
-                checkoutData.put("time", ServerValue.TIMESTAMP)
+                checkoutData["time"] = ServerValue.TIMESTAMP
 
-                mFirebase!!.child(FIREBASE_ROOT_NODE).child(place.getId()).setValue(checkoutData)
+                mFirebase!!.child(FIREBASE_ROOT_NODE).child(place.id).setValue(checkoutData)
             } else if (resultCode == PlacePicker.RESULT_ERROR) {
                 Toast.makeText(this, "Places API failure! Check that the API is enabled for your key",
                         Toast.LENGTH_LONG).show()
@@ -88,7 +81,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         }
         mMap!!.isMyLocationEnabled = true
         mMap!!.setOnMyLocationChangeListener({location ->
-            val ll = LatLng(location.getLatitude(), location.getLongitude())
+            val ll = LatLng(location.latitude, location.longitude)
             addPointToViewPort(ll)
             // we only want to grab the location once, to allow the user to pan and zoom freely.
             mMap!!.setOnMyLocationChangeListener(null)

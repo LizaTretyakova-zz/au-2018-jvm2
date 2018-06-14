@@ -24,7 +24,7 @@ class MuseumDBHelper(context: Context, name: String?,
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int,
                            newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MUSEUMS)
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_MUSEUMS")
         onCreate(db)
     }
 
@@ -42,26 +42,25 @@ class MuseumDBHelper(context: Context, name: String?,
     fun getAllMuseumsCursor (): Cursor {
         val query = "SELECT * FROM $TABLE_MUSEUMS"
         val db = this.writableDatabase
-        val cursor = db.rawQuery(query, null)
-        return cursor
+        return db.rawQuery(query, null)
     }
 
     fun deleteMuseum(name: String): Boolean {
         val result = false
         val db = this.writableDatabase
-        db.delete(TABLE_MUSEUMS, COLUMN_NAME + " = ?", arrayOf(name))
+        db.delete(TABLE_MUSEUMS, "$COLUMN_NAME = ?", arrayOf(name))
         db.close()
         return result
     }
 
     companion object {
 
-        private val DATABASE_VERSION = 3
-        private val DATABASE_NAME = "museumDB.db"
-        val TABLE_MUSEUMS = "museums"
+        private const val DATABASE_VERSION = 3
+        private const val DATABASE_NAME = "museumDB.db"
+        const val TABLE_MUSEUMS = "museums"
 
-        val COLUMN_NAME = BaseColumns._ID
-        val COLUMN_DESCRIPTION = "description"
-        val COLUMN_URL = "url"
+        const val COLUMN_NAME = BaseColumns._ID
+        const val COLUMN_DESCRIPTION = "description"
+        const val COLUMN_URL = "url"
     }
 }
