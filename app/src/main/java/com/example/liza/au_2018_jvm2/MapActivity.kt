@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
-import android.widget.Toast
 import com.firebase.client.*
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
@@ -19,6 +18,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_map.*
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 
 
 class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, ValueEventListener {
@@ -59,8 +60,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
 
                 mFirebase!!.child(FIREBASE_ROOT_NODE).child(place.id).setValue(checkoutData)
             } else if (resultCode == PlacePicker.RESULT_ERROR) {
-                Toast.makeText(this, "Places API failure! Check that the API is enabled for your key",
-                        Toast.LENGTH_LONG).show()
+                longToast("Places API failure! Check that the API is enabled for your key")
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -75,8 +75,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Cannot display the map: permissions not granted", Toast.LENGTH_SHORT)
-                    .show()
+            toast("Cannot display the map: permissions not granted")
             return
         }
         mMap!!.isMyLocationEnabled = true
@@ -111,7 +110,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
     override fun onChildRemoved(p0: DataSnapshot?) {}
 
     override fun onCancelled(p0: FirebaseError?) {
-        Toast.makeText(this, p0?.message, Toast.LENGTH_LONG).show()
+        p0?.message?.let { longToast(it) }
     }
 
     private fun addPointToViewPort(newPoint: LatLng) {
