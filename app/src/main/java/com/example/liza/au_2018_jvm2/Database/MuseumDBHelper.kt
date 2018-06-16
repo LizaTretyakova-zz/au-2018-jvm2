@@ -1,58 +1,15 @@
 package com.example.liza.au_2018_jvm2.Database
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import com.example.liza.au_2018_jvm2.Museum
+import org.jetbrains.anko.db.*
 
-class MuseumDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
-        SQLiteOpenHelper(context, DATABASE_NAME,
-                factory, DATABASE_VERSION) {
-
-    override fun onCreate(db: SQLiteDatabase) {
-        val CREATE_PRODUCTS_TABLE = ("CREATE TABLE " +
-                TABLE_MUSEUMS + "("
-                + COLUMN_NAME + " TEXT PRIMARY KEY," +
-                COLUMN_DESCRIPTION
-                + " TEXT," + COLUMN_URL + " TEXT" + ")")
-        db.execSQL(CREATE_PRODUCTS_TABLE)
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int,
-                           newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_MUSEUMS")
-        onCreate(db)
-    }
-
-    fun addMuseum(museum: Museum) {
-        val values = ContentValues()
-        values.put(COLUMN_NAME, museum.name)
-        values.put(COLUMN_DESCRIPTION, museum.description)
-        values.put(COLUMN_URL, museum.url)
-
-        val db = this.writableDatabase
-        db.insert(TABLE_MUSEUMS, null, values)
-        db.close()
-    }
-
-    fun getAllMuseumsCursor (): Cursor {
-        val query = "SELECT * FROM $TABLE_MUSEUMS"
-        val db = this.writableDatabase
-        return db.rawQuery(query, null)
-    }
-
-    fun deleteMuseum(name: String): Boolean {
-        val result = false
-        val db = this.writableDatabase
-        db.delete(TABLE_MUSEUMS, "$COLUMN_NAME = ?", arrayOf(name))
-        db.close()
-        return result
-    }
-
+class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
     companion object {
+        private var instance: MuseumDBHelper? = null
 
         private const val DATABASE_VERSION = 3
         private const val DATABASE_NAME = "museumDB.db"
@@ -61,5 +18,52 @@ class MuseumDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         const val COLUMN_NAME = BaseColumns._ID
         const val COLUMN_DESCRIPTION = "description"
         const val COLUMN_URL = "url"
+
+        @Synchronized
+        fun getInstance(ctx: Context): MuseumDBHelper {
+            if (instance == null) {
+                instance = MuseumDBHelper(ctx.getApplicationContext())
+            }
+            return instance!!
+        }
+    }
+
+    override fun onCreate(db: SQLiteDatabase) {
+        // Here you create tables
+        db.createTable(TABLE_MUSEUMS, true,
+                COLUMN_NAME to TEXT + PRIMARY_KEY + UNIQUE,
+                COLUMN_DESCRIPTION to TEXT,
+                // TODO(not implemented) -- what about pictures?
+                COLUMN_URL to TEXT)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        // Here you can upgrade tables, as usual
+        db.dropTable(TABLE_MUSEUMS, true)
+    }
+
+    fun addMuseum(museum: Museum) {
+        this.use {
+            insert(TABLE_MUSEUMS,
+                    COLUMN_NAME to museum.name,
+                    COLUMN_DESCRIPTION to museum.description,
+                    COLUMN_URL to museum.url)
+        }
+    }
+
+    fun getAllMuseumsCursor (): Cursor {
+        val query = "SELECT * FROM ${MuseumDBHelper.TABLE_MUSEUMS}"
+        val db = this.writableDatabase
+        return db.rawQuery(query, null)
+    }
+
+    fun deleteMuseum(name: String) {
+        this.use {
+            delete(TABLE_MUSEUMS, "$COLUMN_NAME = {name}", "name" to name)
+        }
     }
 }
+
+// Access property for Context
+val Context.database: MuseumDBHelper
+    get() = MuseumDBHelper.getInstance(getApplicationContext())

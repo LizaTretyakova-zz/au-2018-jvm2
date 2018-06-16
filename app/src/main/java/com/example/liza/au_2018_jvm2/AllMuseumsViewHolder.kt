@@ -5,12 +5,10 @@ import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.example.liza.au_2018_jvm2.Database.MuseumDBAnkoHelper
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.firebase.client.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
-import org.jetbrains.anko.*
 
 class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
 
@@ -48,7 +46,7 @@ class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mV
                 .setCancelable(false)
                 .setPositiveButton("Add to my list!") { _: DialogInterface, _: Int ->
                     // add to local storage
-                    val dbHelper = MuseumDBAnkoHelper(mContext)
+                    val dbHelper = MuseumDBHelper(mContext)
                     dbHelper.addMuseum(mMuseum!!)
                 }
                 .setNegativeButton("Back") { dialogInterface: DialogInterface, _: Int ->
