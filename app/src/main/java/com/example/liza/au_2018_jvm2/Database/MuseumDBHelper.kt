@@ -22,7 +22,7 @@ class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
         @Synchronized
         fun getInstance(ctx: Context): MuseumDBHelper {
             if (instance == null) {
-                instance = MuseumDBHelper(ctx.getApplicationContext())
+                instance = MuseumDBHelper(ctx.applicationContext)
             }
             return instance!!
         }
@@ -66,4 +66,4 @@ class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
 
 // Access property for Context
 val Context.database: MuseumDBHelper
-    get() = MuseumDBHelper.getInstance(getApplicationContext())
+    get() = MuseumDBHelper.getInstance(applicationContext)
