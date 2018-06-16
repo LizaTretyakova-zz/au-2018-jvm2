@@ -44,15 +44,15 @@ class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mV
         alertDialogBuilder
                 .setMessage(mMuseum!!.description)
                 .setCancelable(false)
-                .setPositiveButton("Add to my list!", { dialogInterface: DialogInterface, i: Int ->
+                .setPositiveButton("Add to my list!") { _: DialogInterface, _: Int ->
                     // add to local storage
-                    val dbHelper = MuseumDBHelper(mContext, null, null)
+                    val dbHelper = MuseumDBHelper(mContext, null)
                     dbHelper.addMuseum(mMuseum!!)
-                })
-                .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
+                }
+                .setNegativeButton("Back") { dialogInterface: DialogInterface, _: Int ->
                     // add to local storage
                     dialogInterface.cancel()
-                })
+                }
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }

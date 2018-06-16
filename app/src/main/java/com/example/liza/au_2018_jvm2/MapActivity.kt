@@ -80,12 +80,12 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
             return
         }
         mMap!!.isMyLocationEnabled = true
-        mMap!!.setOnMyLocationChangeListener({location ->
+        mMap!!.setOnMyLocationChangeListener { location ->
             val ll = LatLng(location.latitude, location.longitude)
             addPointToViewPort(ll)
             // we only want to grab the location once, to allow the user to pan and zoom freely.
             mMap!!.setOnMyLocationChangeListener(null)
-        })
+        }
 
         // Set up Firebase
         Firebase.setAndroidContext(this)
@@ -95,17 +95,17 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
     }
 
     override fun onDataChange(dataSnapshot: DataSnapshot?) {
-        dataSnapshot!!.children.forEach({child -> placeOnMap(child, "")})
+        dataSnapshot!!.children.forEach({child -> placeOnMap(child)})
     }
 
     override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
 
     override fun onChildChanged(dataSnapshot: DataSnapshot?, s: String?) {
-        placeOnMap(dataSnapshot, s)
+        placeOnMap(dataSnapshot)
     }
 
     override fun onChildAdded(dataSnapshot: DataSnapshot?, s: String?) {
-        placeOnMap(dataSnapshot, s)
+        placeOnMap(dataSnapshot)
     }
 
     override fun onChildRemoved(p0: DataSnapshot?) {}
@@ -118,15 +118,15 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         mBounds.include(newPoint)
     }
 
-    private fun placeOnMap(dataSnapshot: DataSnapshot?, s: String?) {
+    private fun placeOnMap(dataSnapshot: DataSnapshot?) {
         val name = dataSnapshot!!.key ?: return
         val placeId = dataSnapshot.getValue<String>(String::class.java)
         Places.GeoDataApi.getPlaceById(mGoogleApiClient!!, placeId)
-                .setResultCallback({places ->
+                .setResultCallback { places ->
                     val location = places.get(0).latLng
                     addPointToViewPort(location)
                     mMap!!.addMarker(MarkerOptions().position(location).title(name))
                     places.release()
-                })
+                }
     }
 }

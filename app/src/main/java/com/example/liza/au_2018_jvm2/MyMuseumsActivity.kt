@@ -24,7 +24,7 @@ class MyMuseumsActivity : ListActivity() {
         val fromColumns: Array<String> = arrayOf(COLUMN_NAME, COLUMN_DESCRIPTION)
         val toViews = intArrayOf(android.R.id.text1, android.R.id.text2) // The TextView's in simple_list_item_2
 
-        val dbHelper = MuseumDBHelper(this, null, null)
+        val dbHelper = MuseumDBHelper(this, null)
         mAdapter = SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_2, dbHelper.getAllMuseumsCursor(),
                 fromColumns, toViews, 0)
@@ -37,16 +37,16 @@ class MyMuseumsActivity : ListActivity() {
         alertDialogBuilder
                 .setMessage("Delete museum " + (v as TwoLineListItem).text1.text + " from your list?")
                 .setCancelable(false)
-                .setPositiveButton("Delete", { dialogInterface: DialogInterface, i: Int ->
+                .setPositiveButton("Delete") { _: DialogInterface, _: Int ->
                     // add to local storage
-                    val dbHelper = MuseumDBHelper(this, null, null)
+                    val dbHelper = MuseumDBHelper(this, null)
                     dbHelper.deleteMuseum(v.text1.text.toString())
                     mAdapter.changeCursor(dbHelper.getAllMuseumsCursor())
-                })
-                .setNegativeButton("Back",{ dialogInterface: DialogInterface, i: Int ->
+                }
+                .setNegativeButton("Back") { dialogInterface: DialogInterface, _: Int ->
                     // add to local storage
                     dialogInterface.cancel()
-                })
+                }
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }

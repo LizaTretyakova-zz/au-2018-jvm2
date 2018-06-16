@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import com.example.liza.au_2018_jvm2.Museum
 
-class MuseumDBHelper(context: Context, name: String?,
-                     factory: SQLiteDatabase.CursorFactory?) :
+class MuseumDBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         SQLiteOpenHelper(context, DATABASE_NAME,
                 factory, DATABASE_VERSION) {
 
