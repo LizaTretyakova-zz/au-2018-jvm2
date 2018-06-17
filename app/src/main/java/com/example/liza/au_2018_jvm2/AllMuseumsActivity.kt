@@ -16,7 +16,7 @@ class AllMuseumsActivity : AppCompatActivity() {
         private val FIREBASE_ROOT_NODE = "descriptions2"
     }
 
-    private var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>? = null
+    private lateinit var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +46,11 @@ class AllMuseumsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        mFirebaseAdapter!!.startListening()
+        mFirebaseAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        mFirebaseAdapter!!.stopListening()
+        mFirebaseAdapter.stopListening()
     }
 }

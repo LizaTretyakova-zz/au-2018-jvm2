@@ -38,7 +38,6 @@ class MyMuseumsActivity : AppCompatActivity() {
                     alert("Delete museum " + (v as TwoLineListItem).text1.text + " from your list?",
                             "Delete item") {
                         yesButton {
-                            val dbHelper = MuseumDBHelper(ctx)
                             dbHelper.deleteMuseum(v.text1.text.toString())
                             mAdapter.changeCursor(dbHelper.getAllMuseumsCursor())
                         }

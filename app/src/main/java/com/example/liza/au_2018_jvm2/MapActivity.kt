@@ -25,14 +25,14 @@ import org.jetbrains.anko.toast
 class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, ValueEventListener {
 
     companion object {
-        private val REQUEST_PLACE_PICKER = 1
-        private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
-        private val FIREBASE_ROOT_NODE = "museums"
+        private const val REQUEST_PLACE_PICKER = 1
+        private const val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
+        private const val FIREBASE_ROOT_NODE = "museums"
     }
 
-    private var mGoogleApiClient: GoogleApiClient? = null
-    private var mMap: GoogleMap? = null
-    private var mFirebase: Firebase? = null
+    private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var mMap: GoogleMap
+    private lateinit var mFirebase: Firebase
     private val mBounds = LatLngBounds.Builder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .build()
-        mGoogleApiClient!!.connect()
+        mGoogleApiClient.connect()
 
         // Set up Google Maps
         val mapFragment = map as SupportMapFragment
@@ -58,7 +58,7 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
                 val checkoutData = mutableMapOf<String, Any>()
                 checkoutData["time"] = ServerValue.TIMESTAMP
 
-                mFirebase!!.child(FIREBASE_ROOT_NODE).child(place.id).setValue(checkoutData)
+                mFirebase.child(FIREBASE_ROOT_NODE).child(place.id).setValue(checkoutData)
             } else if (resultCode == PlacePicker.RESULT_ERROR) {
                 longToast("Places API failure! Check that the API is enabled for your key")
             }
@@ -78,23 +78,23 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
             toast("Cannot display the map: permissions not granted")
             return
         }
-        mMap!!.isMyLocationEnabled = true
-        mMap!!.setOnMyLocationChangeListener { location ->
+        mMap.isMyLocationEnabled = true
+        mMap.setOnMyLocationChangeListener { location ->
             val ll = LatLng(location.latitude, location.longitude)
             addPointToViewPort(ll)
             // we only want to grab the location once, to allow the user to pan and zoom freely.
-            mMap!!.setOnMyLocationChangeListener(null)
+            mMap.setOnMyLocationChangeListener(null)
         }
 
         // Set up Firebase
         Firebase.setAndroidContext(this)
         mFirebase = Firebase(FIREBASE_URL)
-        mFirebase!!.child(FIREBASE_ROOT_NODE).addChildEventListener(this)
-        mFirebase!!.child(FIREBASE_ROOT_NODE).addValueEventListener(this)
+        mFirebase.child(FIREBASE_ROOT_NODE).addChildEventListener(this)
+        mFirebase.child(FIREBASE_ROOT_NODE).addValueEventListener(this)
     }
 
     override fun onDataChange(dataSnapshot: DataSnapshot?) {
-        dataSnapshot!!.children.forEach({child -> placeOnMap(child)})
+        dataSnapshot!!.children.forEach { child -> placeOnMap(child)}
     }
 
     override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
@@ -120,11 +120,11 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
     private fun placeOnMap(dataSnapshot: DataSnapshot?) {
         val name = dataSnapshot!!.key ?: return
         val placeId = dataSnapshot.getValue<String>(String::class.java)
-        Places.GeoDataApi.getPlaceById(mGoogleApiClient!!, placeId)
+        Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId)
                 .setResultCallback { places ->
                     val location = places.get(0).latLng
                     addPointToViewPort(location)
-                    mMap!!.addMarker(MarkerOptions().position(location).title(name))
+                    mMap.addMarker(MarkerOptions().position(location).title(name))
                     places.release()
                 }
     }
