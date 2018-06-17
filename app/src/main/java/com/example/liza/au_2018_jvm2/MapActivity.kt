@@ -93,11 +93,17 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         mFirebase.child(FIREBASE_ROOT_NODE).addValueEventListener(this)
     }
 
+    /*
+     * For the sake of ValueEventListener
+     */
     override fun onDataChange(dataSnapshot: DataSnapshot?) {
         dataSnapshot!!.children.forEach { child -> placeOnMap(child)}
     }
 
-    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+    /*
+     * For the sake of ChildEventListener
+     */
+    override fun onChildMoved(dataSnapshot: DataSnapshot?, s: String?) {}
 
     override fun onChildChanged(dataSnapshot: DataSnapshot?, s: String?) {
         placeOnMap(dataSnapshot)
@@ -107,10 +113,10 @@ class MapActivity : FragmentActivity(), OnMapReadyCallback, ChildEventListener, 
         placeOnMap(dataSnapshot)
     }
 
-    override fun onChildRemoved(p0: DataSnapshot?) {}
+    override fun onChildRemoved(dataSnapshot: DataSnapshot?) {}
 
-    override fun onCancelled(p0: FirebaseError?) {
-        p0?.message?.let { longToast(it) }
+    override fun onCancelled(firebaseError: FirebaseError?) {
+        firebaseError?.message?.let { longToast(it) }
     }
 
     private fun addPointToViewPort(newPoint: LatLng) {
