@@ -23,7 +23,6 @@ class MainLayoutActivity : AppCompatActivity() {
                 button(R.string.my_museums) {
                     id = Ids.myMuseumsBtn
                     onClick {
-                        toast("anko")
                         startActivity<MyMuseumsActivity>() }
                 }.lparams(width = matchParent, height = wrapContent)
                 button(R.string.all_museums) {

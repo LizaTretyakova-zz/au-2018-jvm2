@@ -1,23 +1,15 @@
 package com.example.liza.au_2018_jvm2
 
-import android.app.ListActivity
-import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewManager
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import android.widget.TwoLineListItem
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_DESCRIPTION
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_NAME
-import com.example.liza.au_2018_jvm2.Database.database
-import com.google.android.gms.maps.MapView
 import org.jetbrains.anko.*
-import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.sdk25.coroutines.onItemClick
 
 class MyMuseumsActivity : AppCompatActivity() {
