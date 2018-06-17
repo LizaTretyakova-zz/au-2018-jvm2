@@ -1,10 +1,10 @@
-package com.example.liza.au_2018_jvm2.Database
+package com.example.liza.au2018jvm2.Database
 
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
-import com.example.liza.au_2018_jvm2.Museum
+import com.example.liza.au2018jvm2.Museum
 import org.jetbrains.anko.db.*
 
 class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {

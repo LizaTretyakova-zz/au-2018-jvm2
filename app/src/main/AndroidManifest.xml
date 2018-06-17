@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.liza.au_2018_jvm2">
+    package="com.example.liza.au2018jvm2">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainLayoutActivity"
+            android:name="com.example.liza.au2018jvm2.MainLayoutActivity"
             android:label="@string/title_activity_layout_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -43,21 +43,21 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapActivity"
+            android:name="com.example.liza.au2018jvm2.MapActivity"
             android:label="@string/title_activity_map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.liza.au_2018_jvm2.MainLayoutActivity" />
+                android:value="com.example.liza.au2018jvm2.MainLayoutActivity" />
         </activity>
-        <activity android:name=".AllMuseumsActivity" />
+        <activity android:name="com.example.liza.au2018jvm2.AllMuseumsActivity" />
         <activity
-            android:name=".MyMuseumsActivity"
+            android:name="com.example.liza.au2018jvm2.MyMuseumsActivity"
             android:label="@string/title_activity_my_museums"
-            android:parentActivityName=".MainLayoutActivity"
+            android:parentActivityName="com.example.liza.au2018jvm2.MainLayoutActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.liza.au_2018_jvm2.MainLayoutActivity" />
+                android:value="com.example.liza.au2018jvm2.MainLayoutActivity" />
         </activity>
     </application>
 

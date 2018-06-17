@@ -1,4 +1,4 @@
-package com.example.liza.au_2018_jvm2
+package com.example.liza.au2018jvm2
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.SimpleCursorAdapter
 import android.widget.TwoLineListItem
-import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
-import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_DESCRIPTION
-import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper.Companion.COLUMN_NAME
+import com.example.liza.au2018jvm2.Database.MuseumDBHelper
+import com.example.liza.au2018jvm2.Database.MuseumDBHelper.Companion.COLUMN_DESCRIPTION
+import com.example.liza.au2018jvm2.Database.MuseumDBHelper.Companion.COLUMN_NAME
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onItemClick
 

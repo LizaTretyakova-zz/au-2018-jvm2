@@ -1,9 +1,9 @@
-package com.example.liza.au_2018_jvm2
+package com.example.liza.au2018jvm2
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
+import com.example.liza.au2018jvm2.Database.MuseumDBHelper
 import com.firebase.client.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
@@ -13,7 +13,7 @@ import org.jetbrains.anko.noButton
 class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mView) {
 
     companion object {
-        private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
+        private const val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
         private var mFirebase: Firebase? = null
     }
 

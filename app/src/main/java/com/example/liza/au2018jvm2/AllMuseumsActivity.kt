@@ -1,4 +1,4 @@
-package com.example.liza.au_2018_jvm2
+package com.example.liza.au2018jvm2
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +16,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 class AllMuseumsActivity : AppCompatActivity() {
 
     companion object {
-        private val FIREBASE_ROOT_NODE = "descriptions2"
+        private const val FIREBASE_ROOT_NODE = "descriptions2"
     }
 
     private lateinit var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>
@@ -32,9 +32,8 @@ class AllMuseumsActivity : AppCompatActivity() {
         }
 
         val mMuseumsReference = FirebaseDatabase.getInstance().getReference(FIREBASE_ROOT_NODE)
-        val query = mMuseumsReference
         val mOptions = FirebaseRecyclerOptions.Builder<Museum>()
-                .setQuery(query, Museum::class.java)
+                .setQuery(mMuseumsReference, Museum::class.java)
                 .build()
         mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(mOptions) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMuseumsViewHolder {
@@ -63,6 +62,6 @@ class AllMuseumsActivity : AppCompatActivity() {
     }
 
     private object Ids {
-        val all_museums = 1
+        const val all_museums = 1
     }
 }

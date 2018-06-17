@@ -1,4 +1,4 @@
-package com.example.liza.au_2018_jvm2
+package com.example.liza.au2018jvm2
 
 import android.Manifest
 import android.app.Activity

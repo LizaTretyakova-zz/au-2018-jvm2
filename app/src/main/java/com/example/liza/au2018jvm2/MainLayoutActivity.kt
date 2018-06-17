@@ -1,4 +1,4 @@
-package com.example.liza.au_2018_jvm2
+package com.example.liza.au2018jvm2
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -40,8 +40,8 @@ class MainLayoutActivity : AppCompatActivity() {
     }
 
     private object Ids {
-        val allMuseumsBtn = 1
-        val mapBtn = 2
-        val myMuseumsBtn = 3
+        const val allMuseumsBtn = 1
+        const val mapBtn = 2
+        const val myMuseumsBtn = 3
     }
 }
