@@ -9,7 +9,6 @@ import org.jetbrains.anko.db.*
 
 class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
     companion object {
-        private var instance: MuseumDBHelper? = null
 
         private const val DATABASE_VERSION = 3
         private const val DATABASE_NAME = "museumDB.db"
@@ -19,13 +18,6 @@ class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
         const val COLUMN_DESCRIPTION = "description"
         const val COLUMN_URL = "url"
 
-        @Synchronized
-        fun getInstance(ctx: Context): MuseumDBHelper {
-            if (instance == null) {
-                instance = MuseumDBHelper(ctx.applicationContext)
-            }
-            return instance!!
-        }
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -33,7 +25,6 @@ class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
         db.createTable(TABLE_MUSEUMS, true,
                 COLUMN_NAME to TEXT + PRIMARY_KEY + UNIQUE,
                 COLUMN_DESCRIPTION to TEXT,
-                // TODO(not implemented) -- what about pictures?
                 COLUMN_URL to TEXT)
     }
 
@@ -63,7 +54,3 @@ class MuseumDBHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", 
         }
     }
 }
-
-// Access property for Context
-val Context.database: MuseumDBHelper
-    get() = MuseumDBHelper.getInstance(applicationContext)
