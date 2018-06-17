@@ -48,17 +48,17 @@
             android:label="@string/title_activity_map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.liza.au_2018_jvm2.MainActivity" />
+                android:value="com.example.liza.au_2018_jvm2.MainLayoutActivity" />
         </activity>
         <activity android:name=".AllMuseumsActivity" />
         <activity
             android:name=".MyMuseumsActivity"
             android:label="@string/title_activity_my_museums"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MainLayoutActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.liza.au_2018_jvm2.MainActivity" />
+                android:value="com.example.liza.au_2018_jvm2.MainLayoutActivity" />
         </activity>
     </application>
 
