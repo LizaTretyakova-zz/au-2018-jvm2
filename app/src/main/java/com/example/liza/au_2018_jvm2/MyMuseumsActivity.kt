@@ -35,10 +35,11 @@ class MyMuseumsActivity : AppCompatActivity() {
                 adapter = mAdapter
 
                 onItemClick { _: AdapterView<*>?, v: View?, _: Int, _: Long ->
-                    alert("Delete museum " + (v as TwoLineListItem).text1.text + " from your list?",
+                    val name = (v as TwoLineListItem).text1.text.toString()
+                    alert("Delete museum $name from your list?",
                             "Delete item") {
                         yesButton {
-                            dbHelper.deleteMuseum(v.text1.text.toString())
+                            dbHelper.deleteMuseum(name)
                             mAdapter.changeCursor(dbHelper.getAllMuseumsCursor())
                         }
                         noButton { it.cancel() }
