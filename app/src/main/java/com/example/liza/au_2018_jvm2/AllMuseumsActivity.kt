@@ -3,12 +3,15 @@ package com.example.liza.au_2018_jvm2
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_all_museums.*
+import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class AllMuseumsActivity : AppCompatActivity() {
 
@@ -17,11 +20,16 @@ class AllMuseumsActivity : AppCompatActivity() {
     }
 
     private lateinit var mFirebaseAdapter: FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>
+    private lateinit var mAllMuseumsView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_all_museums)
+        constraintLayout {
+            mAllMuseumsView = recyclerView {
+                id = Ids.all_museums
+            }.lparams(width = matchParent, height = matchParent)
+        }
 
         val mMuseumsReference = FirebaseDatabase.getInstance().getReference(FIREBASE_ROOT_NODE)
         val query = mMuseumsReference
@@ -39,9 +47,9 @@ class AllMuseumsActivity : AppCompatActivity() {
                 holder.bindMuseum(model)
             }
         }
-        all_museums!!.setHasFixedSize(true)
-        all_museums!!.layoutManager = LinearLayoutManager(this)
-        all_museums!!.adapter = mFirebaseAdapter
+        mAllMuseumsView.setHasFixedSize(true)
+        mAllMuseumsView.layoutManager = LinearLayoutManager(this)
+        mAllMuseumsView.adapter = mFirebaseAdapter
     }
 
     override fun onStart() {
@@ -52,5 +60,9 @@ class AllMuseumsActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         mFirebaseAdapter.stopListening()
+    }
+
+    private object Ids {
+        val all_museums = 1
     }
 }
