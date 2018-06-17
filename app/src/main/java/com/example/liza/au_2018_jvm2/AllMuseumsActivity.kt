@@ -27,7 +27,7 @@ class AllMuseumsActivity : AppCompatActivity() {
         val query = mMuseumsReference
         val mOptions = FirebaseRecyclerOptions.Builder<Museum>()
                 .setQuery(query, Museum::class.java)
-                .build() // maybe  need customizable parser
+                .build()
         mFirebaseAdapter = object : FirebaseRecyclerAdapter<Museum, AllMuseumsViewHolder>(mOptions) {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMuseumsViewHolder {
                 val view = LayoutInflater.from(parent.context)
