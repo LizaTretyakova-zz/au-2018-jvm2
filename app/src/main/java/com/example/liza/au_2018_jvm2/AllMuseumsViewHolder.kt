@@ -1,27 +1,32 @@
 package com.example.liza.au_2018_jvm2
 
 import android.content.Context
-import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.example.liza.au_2018_jvm2.Database.MuseumDBHelper
 import com.firebase.client.Firebase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.all_museums_view_holder.view.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 
-class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mView), View.OnClickListener {
+class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mView) {
 
     companion object {
         private val FIREBASE_URL = "https://au-2018-jvm2.firebaseio.com"
         private var mFirebase: Firebase? = null
     }
 
-    private var mContext: Context = mView.context
+    private val mContext: Context = mView.context
     private var mMuseum: Museum? = null
 
     init {
-        mView.setOnClickListener(this)
+        mView.setOnClickListener {
+            mContext.alert(mMuseum!!.description, mMuseum!!.name) {
+                positiveButton("Add to my list!") { MuseumDBHelper(mContext).addMuseum(mMuseum!!)}
+                noButton { it.cancel() }
+            }.show()
+        }
         Firebase.setAndroidContext(mContext)
         mFirebase = Firebase(FIREBASE_URL)
     }
@@ -36,24 +41,5 @@ class AllMuseumsViewHolder(private var mView: View) : RecyclerView.ViewHolder(mV
                 .resize(300, 300)
                 .centerCrop()
                 .into(mView.museumImageView)
-    }
-
-    override fun onClick(view: View) {
-        val alertDialogBuilder = AlertDialog.Builder(mContext)
-        alertDialogBuilder.setTitle(mMuseum!!.name)
-        alertDialogBuilder
-                .setMessage(mMuseum!!.description)
-                .setCancelable(false)
-                .setPositiveButton("Add to my list!") { _: DialogInterface, _: Int ->
-                    // add to local storage
-                    val dbHelper = MuseumDBHelper(mContext)
-                    dbHelper.addMuseum(mMuseum!!)
-                }
-                .setNegativeButton("Back") { dialogInterface: DialogInterface, _: Int ->
-                    // add to local storage
-                    dialogInterface.cancel()
-                }
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
     }
 }
